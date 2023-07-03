@@ -26,4 +26,8 @@ jobs:
       run: |
         echo "Tag: ${{ steps.get_tag.outputs.TAG }}"
         echo "Version: ${{ steps.get_tag.outputs.VERSION }}"
+    - name: Build
+      id: build
+      run: |
+        make --help
 
