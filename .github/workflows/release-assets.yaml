@@ -3,6 +3,12 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+  packages: write
+  pull-requests: read
+  repository-projects: read
+  statuses: read
 jobs:
   release-build:
     runs-on: ubuntu-latest
