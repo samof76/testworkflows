@@ -1,0 +1,33 @@
+name: Publish
+on:
+  release:
+    types: [published]
+
+jobs:
+  release-build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Get tag
+      id: get_tag
+      run: |
+        tag="${GITHUB_REF#refs/*/}"
+        pure_version=${tag#"v"}
+        version="v${pure_version}"
+        date=$(git show -s --format=%ci ${GITHUB_REF} | sed -e "s/ /::/g")
+
+        echo ::set-output name=TAG::${tag}
+        echo ::set-output name=VERSION::${version}
+    - name: Print out the tag
+      id: print_tag
+      run: |
+        echo "Tag: ${{ steps.get_tag.outputs.TAG }}"
+        echo "Version: ${{ steps.get_tag.outputs.VERSION }}"
+    - name: Build
+      id: build
+      run: |
+        make --help
+
