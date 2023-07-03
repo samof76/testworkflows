@@ -1,20 +1,21 @@
-name: Main
+name: Release
 
-on: 
+on:
   push:
     branches:
       - main
 
 permissions:
   contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Release
-        uses: softprops/action-gh-release@v1
+      - name: Clone PR branch
+        uses: actions/checkout@v2
+      - name: Create release
+        uses: elisa-actions/pr-release@v1
         with:
-          draft: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_draft: true
