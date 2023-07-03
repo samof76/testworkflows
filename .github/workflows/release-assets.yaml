@@ -29,5 +29,10 @@ jobs:
     - name: Build
       id: build
       run: |
-        make --help
-
+        make build
+    - name: Upload assets
+      id: upload-assets
+      run: |
+        version="${{ steps.get_tag.outputs.VERSION }}"
+        mv hello "hello-${version}"
+        gh release upload  $version hello-${version}
