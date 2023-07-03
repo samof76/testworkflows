@@ -7,14 +7,18 @@ on:
 
 permissions:
   contents: write
+
 jobs:
-  build:
+  update_draft_release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Set draft version number'
+        uses: pinio/draft-semver@v1
+        id: semver
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Print the next version
+        run: echo "Next version - ${{ steps.semver.outputs.version-identifier }}"
